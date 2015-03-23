@@ -37,7 +37,9 @@ static DatabaseManager *sharedInstance;
     return sharedInstance;
 }
 
-- (void)openDatabaseDocument:(NSString*)filename animated:(BOOL)animated {
+- (void)openDatabaseDocument:(NSString*)filename
+    presentingViewController:(UIViewController *)controller
+                    animated:(BOOL)animated {
     BOOL databaseLoaded = NO;
     
     self.selectedFilename = filename;
@@ -102,7 +104,7 @@ static DatabaseManager *sharedInstance;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:passwordViewController];
         
-        [appDelegate.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
+        [controller presentViewController:navigationController animated:animated completion:nil];
     }
 }
 
