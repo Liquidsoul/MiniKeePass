@@ -86,4 +86,7 @@
 - (NSInteger)pwGenCharSets;
 - (void)setPwGenCharSets:(NSInteger)pwGenCharSets;
 
++ (NSString *)documentsDirectory;
++ (NSString *)sharedDirectory;
+
 @end

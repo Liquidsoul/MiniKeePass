@@ -94,7 +94,7 @@ enum {
     self.keyFiles = [[NSMutableArray alloc] init];
 
     // Get the document's directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppSettings documentsDirectory];
 
     // Get the contents of the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -225,7 +225,7 @@ enum {
     }
 
     // Retrieve the Document directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppSettings documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Get the file's modification date
@@ -269,7 +269,7 @@ enum {
     }
 
     // Retrieve the Document directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppSettings documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Close the current database if we're deleting it's file
@@ -336,7 +336,7 @@ enum {
     NSString *newFilename = [newName stringByAppendingPathExtension:[oldFilename pathExtension]];
 
     // Get the full path of where we're going to move the file
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppSettings documentsDirectory];
 
     NSString *oldPath = [documentsDirectory stringByAppendingPathComponent:oldFilename];
     NSString *newPath = [documentsDirectory stringByAppendingPathComponent:newFilename];
@@ -423,7 +423,7 @@ enum {
     }
 
     // Retrieve the Document directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppSettings documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Check if the file already exists

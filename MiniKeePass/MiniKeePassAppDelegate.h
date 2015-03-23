@@ -25,7 +25,6 @@
 @property (nonatomic, strong) DatabaseDocument *databaseDocument;
 
 + (MiniKeePassAppDelegate *)appDelegate;
-+ (NSString *)documentsDirectory;
 
 - (void)importUrl:(NSURL *)url;
 

@@ -293,7 +293,7 @@ static AppSettings *sharedInstance;
 - (void)setBackupDisabled:(BOOL)backupDisabled {
     [userDefaults setBool:backupDisabled forKey:BACKUP_DISABLED];
 
-    NSURL *url = [NSURL fileURLWithPath:[MiniKeePassAppDelegate documentsDirectory] isDirectory:YES];
+    NSURL *url = [NSURL fileURLWithPath:[AppSettings documentsDirectory] isDirectory:YES];
 
     NSError *error = nil;
     if (![url setResourceValue:[NSNumber numberWithBool:!backupDisabled] forKey:NSURLIsExcludedFromBackupKey error:&error]) {
@@ -391,6 +391,21 @@ static AppSettings *sharedInstance;
 
 - (void)setPwGenCharSets:(NSInteger)pwGenCharSets {
     [userDefaults setInteger:pwGenCharSets forKey:PW_GEN_CHAR_SETS];
+}
+
++ (NSString *)documentsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return [paths objectAtIndex:0];
+}
+
++ (NSString *)sharedDirectory {
+    NSURL *sharedContainerUrl = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.duperron.MiniKeePass.shared"];
+    NSString *path = [[sharedContainerUrl URLByAppendingPathComponent:@"databases" isDirectory:YES] path];
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:nil];
+    }
+    return path;
 }
 
 @end

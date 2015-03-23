@@ -17,6 +17,8 @@
 
 #import "PasswordViewController.h"
 
+#import "AppSettings.h"
+
 #define ROW_KEY_FILE 1
 
 @implementation PasswordViewController
@@ -54,7 +56,7 @@
 
 - (NSArray *)keyFiles {
     // Get the documents directory
-    NSString *documentsDirectory = [MiniKeePassAppDelegate documentsDirectory];
+    NSString *documentsDirectory = [AppSettings documentsDirectory];
 
     // Get the list of key files in the documents directory
     NSFileManager *fileManager = [NSFileManager defaultManager];
