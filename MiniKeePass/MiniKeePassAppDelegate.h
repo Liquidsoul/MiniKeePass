@@ -26,8 +26,6 @@
 
 + (MiniKeePassAppDelegate *)appDelegate;
 
-- (void)importUrl:(NSURL *)url;
-
 - (void)closeDatabase;
 - (void)deleteKeychainData;
 - (void)deleteAllData;

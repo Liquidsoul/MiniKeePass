@@ -68,44 +68,13 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    [self importUrl:url];
+    [self.filesViewController importUrl:url];
 
     return YES;
 }
 
 + (MiniKeePassAppDelegate *)appDelegate {
     return [[UIApplication sharedApplication] delegate];
-}
-
-- (void)importUrl:(NSURL *)url {
-    // Get the filename
-    NSString *filename = [url lastPathComponent];
-
-    // Get the full path of where we're going to move the file
-    NSString *documentsDirectory = [AppSettings documentsDirectory];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-
-    // Move input file into documents directory
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL isDirectory = NO;
-    if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
-        if (isDirectory) {
-            // Should not have been passed a directory
-            return;
-        } else {
-            [fileManager removeItemAtPath:path error:nil];
-        }
-    }
-    [fileManager moveItemAtURL:url toURL:[NSURL fileURLWithPath:path] error:nil];
-
-    // Set file protection on the new file
-    [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionComplete} ofItemAtPath:path error:nil];
-
-    // Delete the Inbox folder if it exists
-    [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:@"Inbox"] error:nil];
-
-    [self.filesViewController updateFiles];
-    [self.filesViewController.tableView reloadData];
 }
 
 - (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {

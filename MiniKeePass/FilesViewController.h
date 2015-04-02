@@ -26,4 +26,6 @@
 
 - (void)updateFiles;
 
+- (void)importUrl:(NSURL *)url;
+
 @end
