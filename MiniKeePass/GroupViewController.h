@@ -16,7 +16,6 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "MiniKeePassAppDelegate.h"
 #import "SelectGroupViewController.h"
 #import "KdbLib.h"
 

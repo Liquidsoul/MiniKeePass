@@ -17,7 +17,6 @@
 
 #import <LocalAuthentication/LocalAuthentication.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MiniKeePassAppDelegate.h"
 #import "SettingsViewController.h"
 #import "SelectionListViewController.h"
 #import "KeychainUtils.h"

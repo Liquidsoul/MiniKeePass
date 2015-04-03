@@ -24,6 +24,7 @@
 #import "AppSettings.h"
 #import "ImageFactory.h"
 #import "Kdb3Node.h"
+#import "MiniKeePassAppDelegate.h"
 
 enum {
     SECTION_GROUPS,

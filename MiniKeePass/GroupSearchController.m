@@ -18,6 +18,8 @@
 #import "GroupSearchController.h"
 #import "MiniKeePassAppDelegate.h"
 
+#import "DatabaseDocument.h"
+
 @interface GroupSearchController ()
 @property (nonatomic, weak) MiniKeePassAppDelegate *appDelegate;
 @property (nonatomic, strong) NSMutableArray *results;

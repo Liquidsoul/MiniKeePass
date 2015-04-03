@@ -21,8 +21,6 @@
 #import "NewKdbViewController.h"
 #import "DatabaseManager.h"
 
-@class MiniKeePassAppDelegate;
-
 @interface FilesViewController : UITableViewController <DatabaseManagerDelegate>
 
 - (void)updateFiles;

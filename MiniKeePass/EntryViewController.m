@@ -20,6 +20,7 @@
 #import "AppSettings.h"
 #import "ImageFactory.h"
 #import "WebViewController.h"
+#import "DatabaseManager.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
