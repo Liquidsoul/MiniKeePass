@@ -43,4 +43,6 @@
 
 - (void)updateEnabledControls;
 
++ (void)showSettingsViewInPresentingViewController:(UIViewController*)presentingViewController;
+
 @end

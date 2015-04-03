@@ -20,6 +20,7 @@
 #import "EntryViewController.h"
 #import "SelectGroupViewController.h"
 #import "EditItemViewController.h"
+#import "SettingsViewController.h"
 #import "UIActionSheetAutoDismiss.h"
 #import "AppSettings.h"
 #import "ImageFactory.h"
@@ -177,7 +178,7 @@ enum {
     if (_standardToolbarItems == nil) {
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
                                                                            style:UIBarButtonItemStylePlain
-                                                                          target:self.appDelegate
+                                                                          target:self
                                                                           action:@selector(showSettingsView)];
 
         UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
@@ -489,6 +490,13 @@ enum {
     if (self.editing) {
         [self updateEditingButtons];
     }
+}
+
+#pragma mark - Settings
+
+- (void)showSettingsView
+{
+    [SettingsViewController showSettingsViewInPresentingViewController:self.navigationController];
 }
 
 #pragma mark - Export Database

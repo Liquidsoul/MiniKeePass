@@ -728,4 +728,23 @@ enum {
     }
 }
 
+#pragma mark - show helper
+
++ (void)showSettingsViewInPresentingViewController:(UIViewController*)presentingViewController
+{
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:settingsViewController action:@selector(dismissSettingsView)];
+    settingsViewController.navigationItem.rightBarButtonItem = doneButton;
+
+    UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+
+    [presentingViewController presentViewController:settingsNavController animated:YES completion:nil];
+}
+
+- (void)dismissSettingsView
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 @end

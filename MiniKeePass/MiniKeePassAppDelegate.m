@@ -179,19 +179,4 @@
     }
 }
 
-- (void)showSettingsView {
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettingsView)];
-    settingsViewController.navigationItem.rightBarButtonItem = doneButton;
-    
-    UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    
-    [self.window.rootViewController presentViewController:settingsNavController animated:YES completion:nil];
-}
-
-- (void)dismissSettingsView {
-    [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
 @end

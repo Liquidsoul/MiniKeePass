@@ -28,7 +28,4 @@
 - (void)deleteKeychainData;
 - (void)deleteAllData;
 
-- (void)showSettingsView;
-- (void)dismissSettingsView;
-
 @end

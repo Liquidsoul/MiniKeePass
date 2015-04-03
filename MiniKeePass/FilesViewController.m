@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "MiniKeePassAppDelegate.h"
 #import "FilesViewController.h"
 #import "HelpViewController.h"
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
 #import "GroupViewController.h"
+#import "SettingsViewController.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
 #import "Kdb3Writer.h"
@@ -48,10 +48,9 @@ enum {
 
     [DatabaseManager sharedInstance].delegate = self;
 
-    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
                                                                        style:UIBarButtonItemStylePlain
-                                                                      target:appDelegate
+                                                                      target:self
                                                                       action:@selector(showSettingsView)];
 
     UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"]
@@ -445,6 +444,11 @@ enum {
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newKdbViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)showSettingsView
+{
+    [SettingsViewController showSettingsViewInPresentingViewController:self.navigationController];
 }
 
 - (void)helpPressed {
