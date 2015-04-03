@@ -22,10 +22,10 @@
 #import "EditItemViewController.h"
 #import "SettingsViewController.h"
 #import "UIActionSheetAutoDismiss.h"
+#import "DatabaseManager.h"
 #import "AppSettings.h"
 #import "ImageFactory.h"
 #import "Kdb3Node.h"
-#import "MiniKeePassAppDelegate.h"
 
 enum {
     SECTION_GROUPS,
@@ -37,8 +37,6 @@ enum {
 
 @property (nonatomic, strong) NSMutableArray *groupsArray;
 @property (nonatomic, strong) NSMutableArray *entriesArray;
-
-@property (nonatomic, weak) MiniKeePassAppDelegate *appDelegate;
 
 @property (nonatomic, assign) BOOL sortingEnabled;
 @property (nonatomic, strong) NSComparisonResult (^groupComparator) (id obj1, id obj2);
@@ -64,9 +62,6 @@ enum {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         _group = group;
-
-        // Get the app delegate
-        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         // Configure the various buttons
         self.toolbarItems = self.standardToolbarItems;
