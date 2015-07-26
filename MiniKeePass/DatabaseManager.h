@@ -17,6 +17,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "DatabaseDocument.h"
 
 @interface DatabaseManager : NSObject
 
@@ -30,6 +31,6 @@
 /// @param path Path to the chosen KeePass DatabaseDocument
 /// @param controller the controller to use to present the PasswordViewController if needed
 /// @param animated Animate the ViewController transition
-- (void)openDatabaseDocument:(NSString*)path presentingViewController:(UIViewController*)controller animated:(BOOL)newAnimated;
+- (void)openDatabaseDocument:(NSString*)path presentingViewController:(UIViewController*)controller animated:(BOOL)newAnimated completion:(void (^)(DatabaseDocument* document))completion;
 
 @end

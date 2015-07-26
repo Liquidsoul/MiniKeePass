@@ -38,15 +38,13 @@ static DatabaseManager *sharedInstance;
 }
 
 - (void)openDatabaseDocument:(NSString*)filename
-    presentingViewController:(UIViewController *)controller
-                    animated:(BOOL)animated {
+presentingViewController:(UIViewController *)controller
+                animated:(BOOL)animated
+              completion:(void (^)(DatabaseDocument*))completion {
     BOOL databaseLoaded = NO;
     
     self.selectedFilename = filename;
-    
-    // Get the application delegate
-    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
-    
+
     // Get the documents directory
     NSString *documentsDirectory = [AppSettings documentsDirectory];
     
@@ -73,8 +71,11 @@ static DatabaseManager *sharedInstance;
             
             databaseLoaded = YES;
             
-            // Set the database document in the application delegate
-            appDelegate.databaseDocument = dd;
+            if (nil != completion)
+            {
+                completion(dd);
+            }
+            return;
         } @catch (NSException *exception) {
             // Ignore
         }
@@ -85,7 +86,7 @@ static DatabaseManager *sharedInstance;
         // Prompt the user for a password
         PasswordViewController *passwordViewController = [[PasswordViewController alloc] initWithFilename:filename];
         passwordViewController.donePressed = ^(FormViewController *formViewController) {
-            [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController];
+            [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController completion:completion];
         };
         passwordViewController.cancelPressed = ^(FormViewController *formViewController) {
             [formViewController dismissViewControllerAnimated:YES completion:nil];
@@ -108,7 +109,7 @@ static DatabaseManager *sharedInstance;
     }
 }
 
-- (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController {
+- (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController completion:(void (^)(DatabaseDocument* document))completion {
     NSString *documentsDirectory = [AppSettings documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
@@ -146,9 +147,10 @@ static DatabaseManager *sharedInstance;
 
         // Dismiss the view controller, and after animation set the database document
         [passwordViewController dismissViewControllerAnimated:YES completion:^{
-            // Set the database document in the application delegate
-            MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
-            appDelegate.databaseDocument = dd;
+            if (nil != completion)
+            {
+                completion(dd);
+            }
         }];
     } @catch (NSException *exception) {
         NSLog(@"%@", exception);
