@@ -244,7 +244,7 @@ enum {
             }
 
             // Save the database document
-            [[MiniKeePassAppDelegate appDelegate].databaseDocument save];
+            [[DatabaseManager sharedInstance].document save];
         }
     }
 

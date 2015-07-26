@@ -16,10 +16,16 @@
  */
 
 #import "DatabaseManager.h"
-#import "MiniKeePassAppDelegate.h"
 #import "KeychainUtils.h"
 #import "PasswordViewController.h"
 #import "AppSettings.h"
+
+@interface DatabaseManager ()
+
+/// A string containing the name of the KeePass DatabaseDocument to be managed
+@property (nonatomic, copy) NSString *selectedFilename;
+
+@end
 
 @implementation DatabaseManager
 
@@ -40,7 +46,7 @@ static DatabaseManager *sharedInstance;
 - (void)openDatabaseDocument:(NSString*)filename
 presentingViewController:(UIViewController *)controller
                 animated:(BOOL)animated
-              completion:(void (^)(DatabaseDocument*))completion {
+{
     BOOL databaseLoaded = NO;
     
     self.selectedFilename = filename;
@@ -70,11 +76,8 @@ presentingViewController:(UIViewController *)controller
             DatabaseDocument *dd = [[DatabaseDocument alloc] initWithFilename:path password:password keyFile:keyFilePath];
             
             databaseLoaded = YES;
-            
-            if (nil != completion)
-            {
-                completion(dd);
-            }
+
+            self.document = dd;
             return;
         } @catch (NSException *exception) {
             // Ignore
@@ -86,7 +89,7 @@ presentingViewController:(UIViewController *)controller
         // Prompt the user for a password
         PasswordViewController *passwordViewController = [[PasswordViewController alloc] initWithFilename:filename];
         passwordViewController.donePressed = ^(FormViewController *formViewController) {
-            [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController completion:completion];
+            [self openDatabaseWithPasswordViewController:(PasswordViewController *)formViewController];
         };
         passwordViewController.cancelPressed = ^(FormViewController *formViewController) {
             [formViewController dismissViewControllerAnimated:YES completion:nil];
@@ -109,7 +112,7 @@ presentingViewController:(UIViewController *)controller
     }
 }
 
-- (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController completion:(void (^)(DatabaseDocument* document))completion {
+- (void)openDatabaseWithPasswordViewController:(PasswordViewController *)passwordViewController {
     NSString *documentsDirectory = [AppSettings documentsDirectory];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:self.selectedFilename];
 
@@ -147,14 +150,44 @@ presentingViewController:(UIViewController *)controller
 
         // Dismiss the view controller, and after animation set the database document
         [passwordViewController dismissViewControllerAnimated:YES completion:^{
-            if (nil != completion)
-            {
-                completion(dd);
-            }
+            self.document = dd;
         }];
     } @catch (NSException *exception) {
         NSLog(@"%@", exception);
         [passwordViewController showErrorMessage:exception.reason];
+    }
+}
+
+- (void)closeDatabase
+{
+    self.document = nil;
+}
+
+- (void)setDocument:(DatabaseDocument *)document
+{
+    if (_document)
+    {
+        if ([self.delegate respondsToSelector:@selector(databaseManager:willCloseDocument:)])
+        {
+            [self.delegate databaseManager:self willCloseDocument:_document];
+        }
+        _document = nil;
+        if ([self.delegate respondsToSelector:@selector(databaseManagerDidCloseDocument:)])
+        {
+            [self.delegate databaseManagerDidCloseDocument:self];
+        }
+    }
+    if (document)
+    {
+        if ([self.delegate respondsToSelector:@selector(databaseManagerWillOpenDocument:)])
+        {
+            [self.delegate databaseManagerWillOpenDocument:self];
+        }
+        _document = document;
+        if ([self.delegate respondsToSelector:@selector(databaseManager:didOpenDocument:)])
+        {
+            [self.delegate databaseManager:self didOpenDocument:document];
+        }
     }
 }
 

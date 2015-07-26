@@ -230,7 +230,7 @@ enum {
 
 - (UIDocumentInteractionController *)documentInteractionController {
     if (_documentInteractionController == nil) {
-        NSURL *url = [NSURL fileURLWithPath:self.appDelegate.databaseDocument.filename];
+        NSURL *url = [NSURL fileURLWithPath:[DatabaseManager sharedInstance].document.filename];
         _documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
     }
     return _documentInteractionController;
@@ -558,7 +558,7 @@ enum {
 }
 
 - (NSIndexPath *)addNewGroup {
-    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
+    DatabaseDocument *databaseDocument = [DatabaseManager sharedInstance].document;
 
     // Create and add a group
     KdbGroup *g = [databaseDocument.kdbTree createGroup:self.group];
@@ -586,7 +586,7 @@ enum {
 }
 
 - (NSIndexPath *)addNewEntry {
-    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
+    DatabaseDocument *databaseDocument = [DatabaseManager sharedInstance].document;
 
     // Create and add an entry
     KdbEntry *e = [databaseDocument.kdbTree createEntry:self.group];
@@ -679,7 +679,7 @@ enum {
     }
 
     // Save the database
-    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
+    DatabaseDocument *databaseDocument = [DatabaseManager sharedInstance].document;
     [databaseDocument save];
 }
 
@@ -742,7 +742,7 @@ enum {
     }
 
     // Save the document
-    [self.appDelegate.databaseDocument save];
+    [[DatabaseManager sharedInstance].document save];
 
     [editItemViewController dismissViewControllerAnimated:YES completion:nil];
 
@@ -799,7 +799,7 @@ enum {
     }
 
     // Check if trying to move entries to top level in 1.x database
-    KdbTree *tree = self.appDelegate.databaseDocument.kdbTree;
+    KdbTree *tree = [DatabaseManager sharedInstance].document.kdbTree;
     if (containsEntry && g == tree.root && [tree isKindOfClass:[Kdb3Tree class]]) {
         return NO;
     }
@@ -843,7 +843,7 @@ enum {
     }
 
     // Save the database
-    DatabaseDocument *databaseDocument = self.appDelegate.databaseDocument;
+    DatabaseDocument *databaseDocument = [DatabaseManager sharedInstance].document;
     [databaseDocument save];
 
     // Update the table

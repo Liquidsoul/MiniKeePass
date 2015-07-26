@@ -24,7 +24,6 @@
 #import "PasswordFieldCell.h"
 #import "ImageSelectionViewController.h"
 #import "KdbLib.h"
-#import "MiniKeePassAppDelegate.h"
 #import "PasswordGeneratorViewController.h"
 #import "StringFieldViewController.h"
 

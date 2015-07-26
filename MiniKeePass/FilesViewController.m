@@ -20,6 +20,7 @@
 #import "HelpViewController.h"
 #import "DatabaseManager.h"
 #import "NewKdbViewController.h"
+#import "GroupViewController.h"
 #import "AppSettings.h"
 #import "KeychainUtils.h"
 #import "Kdb3Writer.h"
@@ -44,6 +45,8 @@ enum {
 
     self.title = NSLocalizedString(@"Files", nil);
     self.tableView.allowsSelectionDuringEditing = YES;
+
+    [DatabaseManager sharedInstance].delegate = self;
 
     MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"]
@@ -305,9 +308,10 @@ enum {
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
 
     // Close the current database if we're deleting it's file
-    MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
-    if ([path isEqualToString:appDelegate.databaseDocument.filename]) {
-        [appDelegate closeDatabase];
+    DatabaseManager* databaseManager = [DatabaseManager sharedInstance];
+    if ([path isEqualToString:databaseManager.document.filename])
+    {
+        [databaseManager closeDatabase];
     }
 
     // Delete the file
@@ -319,6 +323,29 @@ enum {
     [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
 }
 
+#pragma mark - DatabaseManagerDelegate
+
+- (void)databaseManager:(DatabaseManager *)manager willCloseDocument:(DatabaseDocument *)document
+{
+    // Close any open database views
+    [self.navigationController popToRootViewControllerAnimated:NO];
+}
+
+- (void)databaseManagerWillOpenDocument:(DatabaseManager *)manager
+{
+    // to call in delegate which will be FilesViewController
+    [self.navigationController popToRootViewControllerAnimated:NO];
+}
+
+- (void)databaseManager:(DatabaseManager *)manager didOpenDocument:(DatabaseDocument *)document
+{
+    // Create and push on the root group view controller
+    GroupViewController *groupViewController = [[GroupViewController alloc] initWithGroup:document.kdbTree.root];
+    groupViewController.title = [[document.filename lastPathComponent] stringByDeletingPathExtension];
+
+    [self.navigationController pushViewController:groupViewController animated:YES];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -328,9 +355,7 @@ enum {
             if (self.editing == NO) {
                 // Load the database
                 MiniKeePassAppDelegate* appDelegate = [MiniKeePassAppDelegate appDelegate];
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] presentingViewController:appDelegate.window.rootViewController animated:YES completion:^(DatabaseDocument * document) {
-                    [MiniKeePassAppDelegate appDelegate].databaseDocument = document;
-                }];
+                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] presentingViewController:appDelegate.window.rootViewController animated:YES];
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] init];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);

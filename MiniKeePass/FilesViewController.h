@@ -19,10 +19,11 @@
 #import "FilesInfoView.h"
 #import "TextEntryController.h"
 #import "NewKdbViewController.h"
+#import "DatabaseManager.h"
 
 @class MiniKeePassAppDelegate;
 
-@interface FilesViewController : UITableViewController
+@interface FilesViewController : UITableViewController <DatabaseManagerDelegate>
 
 - (void)updateFiles;
 

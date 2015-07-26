@@ -16,7 +16,7 @@
  */
 
 #import "SelectGroupViewController.h"
-#import "MiniKeePassAppDelegate.h"
+#import "DatabaseManager.h"
 #import "ImageFactory.h"
 
 #define DEFAULT_SPACER_WIDTH 10.0f
@@ -66,7 +66,6 @@ static NSString *const kKeyName = @"name";
 @interface SelectGroupViewController ()
 
 @property (nonatomic, strong) NSMutableArray *allGroups;
-@property (nonatomic, weak) MiniKeePassAppDelegate *appDelegate;
 
 @end
 
@@ -78,7 +77,6 @@ static NSString *const kKeyName = @"name";
         self.title = NSLocalizedString(@"Choose Group", nil);
 
         self.allGroups = [[NSMutableArray alloc] init];
-        self.appDelegate = [MiniKeePassAppDelegate appDelegate];
 
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModalViewControllerAnimated:)];
         self.navigationItem.leftBarButtonItem = cancelButton;
@@ -88,8 +86,8 @@ static NSString *const kKeyName = @"name";
 
 - (void)viewDidLoad {
     // Get parameters for the root
-    KdbGroup *rootGroup = self.appDelegate.databaseDocument.kdbTree.root;
-    NSString *filename = [self.appDelegate.databaseDocument.filename lastPathComponent];
+    KdbGroup *rootGroup = [DatabaseManager sharedInstance].document.kdbTree.root;
+    NSString *filename = [[DatabaseManager sharedInstance].document.filename lastPathComponent];
 
     // Recursivly add subgroups
     [self addGroup:rootGroup withName:filename atLevel:0];

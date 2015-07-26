@@ -310,8 +310,7 @@ static LockScreenManager *sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     if ([self shouldCloseDatabase]) {
-        MiniKeePassAppDelegate *appDelegate = [MiniKeePassAppDelegate appDelegate];
-        [appDelegate closeDatabase];
+        [[DatabaseManager sharedInstance] closeDatabase];
     }
 
     if ([self shouldCheckPin]) {

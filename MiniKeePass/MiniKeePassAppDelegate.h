@@ -22,11 +22,9 @@
 @interface MiniKeePassAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, strong) DatabaseDocument *databaseDocument;
 
 + (MiniKeePassAppDelegate *)appDelegate;
 
-- (void)closeDatabase;
 - (void)deleteKeychainData;
 - (void)deleteAllData;
 

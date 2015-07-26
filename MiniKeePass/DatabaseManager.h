@@ -19,10 +19,23 @@
 #import <UIKit/UIKit.h>
 #import "DatabaseDocument.h"
 
+@class DatabaseManager;
+
+@protocol DatabaseManagerDelegate <NSObject>
+
+@optional
+- (void)databaseManagerWillOpenDocument:(DatabaseManager*)manager;
+- (void)databaseManager:(DatabaseManager*)manager didOpenDocument:(DatabaseDocument*)document;
+- (void)databaseManager:(DatabaseManager*)manager willCloseDocument:(DatabaseDocument*)document;
+- (void)databaseManagerDidCloseDocument:(DatabaseManager*)manager;
+
+@end
+
 @interface DatabaseManager : NSObject
 
-/// A string containing the name of the KeePass DatabaseDocument to be managed
-@property (nonatomic, copy) NSString *selectedFilename;
+@property (nonatomic, strong, readonly) DatabaseDocument* document;
+
+@property (nonatomic, weak) id<DatabaseManagerDelegate> delegate;
 
 /// Create a DatabaseManager instance
 + (DatabaseManager*)sharedInstance;
@@ -31,6 +44,10 @@
 /// @param path Path to the chosen KeePass DatabaseDocument
 /// @param controller the controller to use to present the PasswordViewController if needed
 /// @param animated Animate the ViewController transition
-- (void)openDatabaseDocument:(NSString*)path presentingViewController:(UIViewController*)controller animated:(BOOL)newAnimated completion:(void (^)(DatabaseDocument* document))completion;
+- (void)openDatabaseDocument:(NSString*)path presentingViewController:(UIViewController*)controller animated:(BOOL)newAnimated;
+
+/// Close the current opened database document.
+/// This will do nothing if no document is currently opened.
+- (void)closeDatabase;
 
 @end

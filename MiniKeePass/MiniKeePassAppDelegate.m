@@ -34,7 +34,7 @@
 @implementation MiniKeePassAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    _databaseDocument = nil;
+    [[DatabaseManager sharedInstance] closeDatabase];
 
     // Create the files view
     self.filesViewController = [[FilesViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -77,27 +77,6 @@
     return [[UIApplication sharedApplication] delegate];
 }
 
-- (void)setDatabaseDocument:(DatabaseDocument *)newDatabaseDocument {
-    if (_databaseDocument != nil) {
-        [self closeDatabase];
-    }
-    
-    _databaseDocument = newDatabaseDocument;
-    
-    // Create and push on the root group view controller
-    GroupViewController *groupViewController = [[GroupViewController alloc] initWithGroup:_databaseDocument.kdbTree.root];
-    groupViewController.title = [[_databaseDocument.filename lastPathComponent] stringByDeletingPathExtension];
-    
-    [self.navigationController pushViewController:groupViewController animated:YES];
-}
-
-- (void)closeDatabase {
-    // Close any open database views
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    
-    _databaseDocument = nil;
-}
-
 - (void)deleteKeychainData {
     // Reset some settings
     AppSettings *appSettings = [AppSettings sharedInstance];
@@ -115,7 +94,7 @@
 
 - (void)deleteAllData {
     // Close the current database
-    [self closeDatabase];
+    [[DatabaseManager sharedInstance] closeDatabase];
 
     // Delete data stored in system keychain
     [self deleteKeychainData];
