@@ -354,8 +354,7 @@ enum {
         case SECTION_DATABASE:
             if (self.editing == NO) {
                 // Load the database
-                MiniKeePassAppDelegate* appDelegate = [MiniKeePassAppDelegate appDelegate];
-                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] presentingViewController:appDelegate.window.rootViewController animated:YES];
+                [[DatabaseManager sharedInstance] openDatabaseDocument:[self.databaseFiles objectAtIndex:indexPath.row] presentingViewController:self.navigationController animated:YES];
             } else {
                 TextEntryController *textEntryController = [[TextEntryController alloc] init];
                 textEntryController.title = NSLocalizedString(@"Rename", nil);

@@ -581,7 +581,7 @@ enum {
     };
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editItemViewController];
-    [self.appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 
     return [NSIndexPath indexPathForRow:index inSection:SECTION_GROUPS];
 }
@@ -713,7 +713,7 @@ enum {
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editItemViewController];
 
-    [self.appDelegate.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)renameItem:(EditItemViewController *)editItemViewController {
@@ -757,7 +757,7 @@ enum {
     selectGroupViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectGroupViewController];
 
-    [self.appDelegate.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 - (BOOL)selectGroupViewController:(SelectGroupViewController *)selectGroupViewController
